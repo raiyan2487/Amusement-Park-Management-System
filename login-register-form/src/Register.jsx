@@ -3,6 +3,7 @@ import React, { useState } from "react";
 export const Register = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [con_pass, setConPass] = useState('');
     const [name, setName] = useState('');
     const [phone, setTel] = useState('');
 
@@ -28,6 +29,10 @@ export const Register = (props) => {
             <label htmlFor="password">Password</label>
             <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
             
+            <label htmlFor="password">Confirm Password</label>
+            <input value={con_pass} onChange={(e) => setConPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
+            
+
             <button type="submit">Register</button>
         
         </form>
