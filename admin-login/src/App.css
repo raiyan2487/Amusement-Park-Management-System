@@ -10,7 +10,7 @@
 }
 
 
-.auth-form-container, .login-form {
+.auth-form-container, .login-form, .register-form {
   display: flex;
   flex-direction: column;
 }
