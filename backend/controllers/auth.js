@@ -2,6 +2,15 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const db = require("../db");
 
+exports.FetchRides = async (req, res) => {
+    console.log("Reached request")
+
+    db.query('SELECT * FROM RIDES', (err, results) => {
+        if(err) return res.send("AN ERROR HAS OCCURED")
+
+        return res.send(results)
+    })
+}
 
 exports.Register = (req, res) => {
     console.log(req.body);
