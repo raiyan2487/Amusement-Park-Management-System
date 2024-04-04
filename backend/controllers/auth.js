@@ -295,3 +295,114 @@ exports.addReview = (req, res) => {
     }
 
 };
+
+exports.BuyTickets = (req, res) => {
+    try {
+        const { userid, packageName, amountPaid, transactionId } = req.body;
+
+        if (!userid || !packageName || !amountPaid || !transactionId) {
+            console.log(req.body)
+
+            return res.status(400).send("Please fill out all the required fields");
+        }
+
+        jwt.verify(userid, process.env.JWT_SECRET, function(err, decoded) {
+            if(err) return res.send({ err: 'user not verified' });
+
+            db.query(
+                "UPDATE packages SET AvailableTickets = AvailableTickets - 1 WHERE PackageName = ?",
+                [packageName],
+                (updateError, updateResults) => {
+                    if (updateError) {
+                        console.log(updateError);
+                        return res.status(500).send("Internal Server Error");
+                    }
+
+                db.query(
+                    "INSERT INTO tickets (UserUserID, Type, Price, TicketID) VALUES (?, ?, ?, ?)",
+                    [decoded.id, packageName, amountPaid, transactionId],
+    
+                    (error, results) => {
+                        if (error) {
+                            console.log(error);
+                            return res.status(500).send("Internal Server Error");
+                        } else {
+                            console.log(results);
+                            return res.status(200).send("Ticket purchased successfully");
+                        }
+                    }
+                );
+            })
+
+        }
+    );
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal Server Error");
+    }
+};
+exports.getPackages = (req, res) => {
+    db.query('SELECT * FROM packages', (err, result) => {
+        if(err) return res.send("AN ERROR HAS OCCURED")
+
+        return res.send(result)
+    })
+}
+
+//Rohan
+
+exports.AdminRemoveRides = (req, res) => {
+    const { rideName, adminToken } = req.body;
+        
+    if (!rideName || !adminToken) {
+        return res.status(400).json({ error: 'Write the name of the ride properly or admin is not verified' });
+    }
+
+    jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+        if(err) return res.send("USER NOT ADMIN")
+
+        const sql = 'DELETE FROM rides WHERE Name = ?'
+        
+        db.query(sql, [rideName], (error, results) => {
+            if (error) {
+                console.error('Error deleting ride:', error);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: 'Ride not found' });
+            }
+
+            res.status(200).json({ message: 'Ride deleted successfully' });
+        });
+    })
+};  
+
+exports.AdminAddRides = (req, res) => {
+    const { rideName, rideDescription, rideImageLink, adminToken } = req.body;
+    let price = 200
+
+    console.log(req.body)
+  
+    if (!rideName || !rideDescription || !price || !rideImageLink) {
+      return res.status(400).json({ error: 'All parameters are required' });
+    }
+
+    jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+        if(err) return res.send("USER IS NOT ADMIN")
+
+        const sql = 'INSERT INTO rides (Name, Description, Price, image) VALUES (?, ?, ?, ?)';
+        const values = [rideName, rideDescription, price, rideImageLink];
+  
+
+        db.query(sql, values, (error, results) => {
+            if (error) {
+                console.error('Error adding ride:', error);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+        
+            res.status(201).json({ message: 'Ride added successfully', rideId: results.insertId });
+        });
+    })
+  };

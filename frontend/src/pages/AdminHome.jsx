@@ -23,11 +23,11 @@ const AdminHome = () => {
                     <h1 className="text-4xl font-bold">Rides</h1>
                     <div className="space-x-4 m-5">
                         <button className="bg-white px-5 py-4 rounded-lg">
-                            <Link className="font-bold" to="/add-ride">Add</Link>
+                            <Link className="font-bold" to="/admin/add-rides">Add</Link>
                         </button>
 
                         <button className="bg-white px-5 py-4 rounded-lg">
-                            <Link className="font-bold" to="/delete-ride">Delete</Link>
+                            <Link className="font-bold" to="/admin/remove-rides">Delete</Link>
                         </button>
                     </div>
                 </div>
