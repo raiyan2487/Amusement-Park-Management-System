@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.box-shadow-special {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.w-real-large {
+    width: 38rem;
+}
+
+.h-real-large {
+    height: 32rem;
+}
