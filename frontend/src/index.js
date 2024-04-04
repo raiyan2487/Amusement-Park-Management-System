@@ -8,6 +8,7 @@ import AdminLogin from './pages/AdminLogin.jsx'
 import BanUser from './pages/AdminBanUser.jsx'
 import UserLogin from './pages/UserLogin.jsx'
 import AdminHome from './pages/AdminHome.jsx'
+import Packages from './pages/Packages.jsx'
 import Review from './pages/Review.jsx'
 import Rides from './pages/Rides.jsx'
 import Home from './pages/Home.jsx'
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/admin/login" element={<AdminLogin />} /> 
                 <Route path="/admin/ban-user" element={<BanUser />} />
                 <Route path="/reviews" element={<Review />} />
+                <Route path="/packages" element={<Packages />} />
             </Routes>
         </BrowserRouter> 
     </React.StrictMode>
