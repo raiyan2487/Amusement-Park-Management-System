@@ -295,3 +295,60 @@ exports.addReview = (req, res) => {
     }
 
 };
+
+exports.getPackages = async (req, res) => {
+    db.query('SELECT * FROM packages', (err, results) => {
+        if(err) return res.send("AN ERROR HAS OCCURED")
+        
+        return res.send(results)
+    })
+}
+
+
+exports.BuyTickets = (req, res) => {
+    try {
+        const { userid, packageName, amountPaid, transactionId } = req.body;
+
+        if (!userid || !packageName || !amountPaid || !transactionId) {
+            console.log(req.body)
+
+            return res.status(400).send("Please fill out all the required fields");
+        }
+
+        jwt.verify(userid, process.env.JWT_SECRET, function(err, decoded) {
+            if(err) return res.send({ err: 'user not verified' });
+
+            db.query(
+                "UPDATE packages SET AvailableTickets = AvailableTickets - 1 WHERE PackageName = ?",
+                [packageName],
+                (updateError, updateResults) => {
+                    if (updateError) {
+                        console.log(updateError);
+                        return res.status(500).send("Internal Server Error");
+                    }
+
+                db.query(
+                    "INSERT INTO tickets (UserUserID, Type, Price, TicketID) VALUES (?, ?, ?, ?)",
+                    [decoded.id, packageName, amountPaid, transactionId],
+    
+                    (error, results) => {
+                        if (error) {
+                            console.log(error);
+                            return res.status(500).send("Internal Server Error");
+                        } else {
+                            console.log(results);
+                            return res.status(200).send("Ticket purchased successfully");
+                        }
+                    }
+                );
+            })
+
+        }
+    );
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal Server Error");
+    }
+};
+
