@@ -295,3 +295,12 @@ exports.addReview = (req, res) => {
     }
 
 };
+
+// Nafees
+exports.getPackages = (req, res) => {
+    db.query('SELECT * FROM packages', (err, result) => {
+        if(err) return res.send("AN ERROR HAS OCCURED")
+
+        return res.send(result)
+    })
+}

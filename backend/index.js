@@ -26,6 +26,7 @@ app.post('/delete-user', AdminDeleteUser)
 app.post('/get-user-as-admin', GetUserDataAsAdmin)
 app.get('/fetch-review', fetchReviews)
 app.post('/add-review', addReview)
+app.get('/get-package', getPackages)
 
 //Start Server
 app.listen(4000, () => {
