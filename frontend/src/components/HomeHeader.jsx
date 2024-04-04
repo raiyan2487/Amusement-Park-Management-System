@@ -17,15 +17,19 @@ export const Header = () => {
                 </div>
 
                 <div className="flex items-center justify-center space-x-4">
-                    <Link className="font-bold" to="/">Home</Link>
-                    <Link className="font-bold" to="/Rides">Rides</Link>
-                    <Link className="font-bold" to="/user-profile">User Profile</Link>
-                    <Link className="font-bold" to="/reviews">Reviews</Link>
+                    <Link className="font-bold text-sm" to="/">Home</Link>
+                    <Link className="font-bold text-sm " to="/Rides">Rides</Link>
+                    <Link className="font-bold text-sm" to="/user-profile">User Profile</Link>
+                    <Link className="font-bold text-sm" to="/reviews">Reviews</Link>
+                    <Link className="font-bold text-sm" to="/packages">Packages</Link>
 
-                    <div className="font-bold" style={{ cursor: "pointer" }} onClick={() => {
-                        document.cookie = 'token=0'
-                        window.location.href = 'http://localhost:3000/login'
-                    }}>Sign Out</div>
+                    {(document.cookie == "token=0" || document.cookie == "" || document.cookie == undefined) ? 
+                        <Link className="font-bold text-sm" to="/login">Login</Link> :
+                        <div className="font-bold text-sm" style={{ cursor: "pointer" }} onClick={() => {
+                            document.cookie = 'token=0'
+                            window.location.href = 'http://localhost:3000/login'
+                        }}>Sign Out</div>
+                    }
                     <p>&nbsp;&nbsp;</p>
                 </div>
 

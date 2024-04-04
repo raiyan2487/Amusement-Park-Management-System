@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import React from 'react'
 import './index.css'
 
+import TicketConfirmation from './pages/TicketConfirmation.jsx'
 import UserProfile from './pages/UserProfile.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import BanUser from './pages/AdminBanUser.jsx'
@@ -26,6 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/admin/ban-user" element={<BanUser />} />
                 <Route path="/reviews" element={<Review />} />
                 <Route path="/packages" element={<Packages />} />
+                <Route path="/buy-tickets/:pname/:Price" element={<TicketConfirmation />} />
             </Routes>
         </BrowserRouter> 
     </React.StrictMode>
