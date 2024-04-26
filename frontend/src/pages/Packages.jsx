@@ -23,19 +23,19 @@ const BuyTickets = () => {
  return (
   <>
   <Header />
-    <div className="flex flex-col items-cente">
-      <h1 className="text-3xl my-6 text-center font-bold">Buy Tickets</h1>
+    <div className="flex flex-col">
+      <h1 className="text-3xl my-6 text-center font-bold">Packages</h1>
 
       <div className="justify-center gap-6 flex flex-col items-center">
         {packages.map((pack) => (
-          <div key={pack.PackageID} className="py-8 bg-red-400 flex flex-col justify-center items-center text-center w-2/3 rounded-lg box-shadow-special">
+          <div key={pack.PackageID} className="py-8 color-red-special flex flex-col justify-center items-center text-center w-2/3 rounded-lg box-shadow-special">
             <h2 className="text-xl font-bold">{pack.PackageName}</h2>
             <h2>{pack.PackageDetails}</h2>
             <h2>Price: {pack.Price}</h2>
             <h2>tickets available: {pack.AvailableTickets}</h2>
             {pack.AvailableTickets > 0 ? (
               <button className="font-bold relative border-none bg-white px-4 py-4 rounded-lg cursor-pointer top-3" onClick={() => handleBuyTicket(pack.PackageID)}>
-                <Link to={`/buy-tickets/${pack.PackageName}/${pack.Price}`}>Buy Ticket</Link>
+                <Link to={`/buy-tickets/${pack.PackageName}/${pack.Price}`}>Buy Package</Link>
               </button>
               ) : (
               <p className='msg'>Sorry! tickets for this package are currently unavailable</p>
