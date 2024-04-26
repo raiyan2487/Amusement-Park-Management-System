@@ -27,6 +27,7 @@ exports.FetchRides = async (req, res) => {
     })
 }
 
+// Nafees
 exports.GetUserDataAsAdmin = (req, res) => {
     try {
         const { userId, adminToken } = req.body;
@@ -65,6 +66,7 @@ exports.GetUserDataAsAdmin = (req, res) => {
     }
 }
 
+// Nafees
 exports.Register = (req, res) => {
         console.log(req.body);
     
@@ -123,6 +125,7 @@ exports.Register = (req, res) => {
     };
 
 
+// Nafees
 exports.Login = async (req, res) => {
     try {
         const { userid, password } = req.body;
@@ -167,6 +170,7 @@ exports.Login = async (req, res) => {
     }
 };
 
+// Nafees
 exports.AdminLogin = async (req, res) => {
     try {
         const { userid, password } = req.body;
@@ -304,7 +308,129 @@ exports.getPackages = async (req, res) => {
     })
 }
 
+// Nafees
+exports.AdminAddPackage = (req, res) => {
+    try {
+        const { packageId, packageName, packageDetails, availableTickets, adminToken, price } = req.body;
 
+        if (!packageId || !packageName || !packageDetails || !availableTickets || !adminToken || !price) {
+            return res.status(400).send("Please provide all the required information");
+        }
+
+        jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+            if(err) return res.send("USER NOT ADMIN")
+
+            db.query(
+                "INSERT INTO packages (PackageID, PackageName, PackageDetails, AvailableTickets, Price) VALUES (?, ?, ?, ?, ?)",
+                [packageId, packageName, packageDetails, availableTickets, price],
+                (error, results) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(500).send("Internal Server Error");
+                    } else {
+                        console.log(results);
+                        return res.status(200).send("Package added successfully");
+                    }
+                }
+            );
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal Server Error");
+    }
+};
+
+//Nafees
+exports.AdminRemovePackage = (req, res) => {
+    try {
+        const { packageId, adminToken } = req.body;
+
+        if (!packageId || !adminToken) {
+            return res.status(400).send("Please provide a valid package ID");
+        }
+
+        jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+            if(err) return res.send("USER NOT ADMIN")
+
+            db.query(
+                "DELETE FROM packages WHERE PackageID = ?",
+                [packageId],
+                (error, results) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(500).send("Internal Server Error");
+                    } else {
+                        if (results.affectedRows > 0) {
+                            console.log(results);
+                            return res.status(200).send("Package deleted successfully");
+                        } else {
+                            return res.status(404).send("Package not found");
+                        }
+                    }
+                }
+            );
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal Server Error");
+    }
+};
+
+// Nafees
+exports.AdminUpdatePackage = (req, res) => {
+    console.log('Got request')
+
+    try {
+        const { packageId, packageName, packageDetails, availableTickets, adminToken, price } = req.body;
+
+        if (!packageId || !adminToken || !packageDetails || !availableTickets || !adminToken || !price) {
+            console.log('NO data')
+            return res.status(400).send("Please provide a valid package ID and admin token");
+        }
+
+        jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+            if(err) console.log("admin-no-error")
+            if (err) return res.send("USER NOT ADMIN");
+
+            db.query(
+                "SELECT * FROM packages WHERE PackageID = ?",
+                [packageId],
+                (selectError, selectResults) => {
+                    if (selectError) {
+                        console.log(selectError);
+                        return res.status(500).send("Internal Server Error");
+                    } else {
+                        if (selectResults.length === 0) {
+                            return res.status(404).send("Package not found");
+                        }
+
+                        
+                        db.query(
+                            "UPDATE packages SET PackageName = ?, PackageDetails = ?, AvailableTickets = ?, Price = ? WHERE PackageID = ?",
+                            [packageName, packageDetails, availableTickets, price, packageId],
+                            (updateError, updateResults) => {
+                                if (updateError) {
+                                    console.log(updateError);
+                                    return res.status(500).send("Internal Server Error");
+                                } else {
+                                    console.log(updateResults);
+                                    return res.status(200).send("Package updated successfully");
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal Server Error");
+    }
+};
+
+
+
+// Nafees
 exports.BuyTickets = (req, res) => {
     try {
         const { userid, packageName, amountPaid, transactionId } = req.body;
@@ -315,7 +441,10 @@ exports.BuyTickets = (req, res) => {
             return res.status(400).send("Please fill out all the required fields");
         }
 
+        console.log(userid + "    Here");
+
         jwt.verify(userid, process.env.JWT_SECRET, function(err, decoded) {
+            if(err) console.log("error here")
             if(err) return res.send({ err: 'user not verified' });
 
             db.query(
@@ -324,23 +453,32 @@ exports.BuyTickets = (req, res) => {
                 (updateError, updateResults) => {
                     if (updateError) {
                         console.log(updateError);
+                        console.log("error here  111")
                         return res.status(500).send("Internal Server Error");
                     }
 
-                db.query(
-                    "INSERT INTO tickets (UserUserID, Type, Price, TicketID) VALUES (?, ?, ?, ?)",
-                    [decoded.id, packageName, amountPaid, transactionId],
-    
-                    (error, results) => {
-                        if (error) {
-                            console.log(error);
-                            return res.status(500).send("Internal Server Error");
-                        } else {
-                            console.log(results);
-                            return res.status(200).send("Ticket purchased successfully");
+                    console.log("Reached code here")
+
+                db.query("SELECT PackageDetails FROM packages WHERE PackageName = ?", [packageName], (err, result) => {
+                    if(err) res.status(500).send("INTERNAL SERVER ERROR")
+
+                    let packageDetails = result[0].PackageDetails;
+
+                    db.query(
+                        "INSERT INTO tickets (UserUserID, Type, Price, TicketID, PackageDetails) VALUES (?, ?, ?, ?, ?)",
+                        [decoded.id, packageName, amountPaid, transactionId, packageDetails],
+        
+                        (error, results) => {
+                            if (error) {
+                                console.log(error);
+                                return res.status(500).send("Internal Server Error");
+                            } else {
+                                console.log(results);
+                                return res.status(200).send("Ticket purchased successfully");
+                            }
                         }
-                    }
-                );
+                    );
+                })
             })
 
         }
@@ -352,3 +490,71 @@ exports.BuyTickets = (req, res) => {
     }
 };
 
+
+// Nafees
+exports.createCustomPackage = (req, res) => {
+    const { price, rides, ticketCount, transactionId } = req.body;
+
+    if(!price || !rides || !ticketCount || !transactionId) return res.status(400).send("Please provide data!")
+    
+    jwt.verify(req.body.token, process.env.JWT_SECRET, async (err, decoded) => {
+        if(err) return res.json('NOT LOGGED IN')
+        let doneCount = 0;
+        let total = 0;
+
+        await rides.map((ride, i) => {
+            db.query('SELECT Price FROM RIDES WHERE Name = ?', [ride], (err, result) => {
+                if(err) return res.status(500).send("SERVER ERROR")
+                if(result.length <= 0) return res.status(400).send("Incorrect Data")
+
+                total += result[0].Price * ticketCount[i]
+                doneCount ++;
+
+                if(doneCount >= ticketCount.length) {
+                    if(price == total) {
+                        const ticketId = transactionId;
+
+                        db.query(
+                            "SELECT MAX(Type) AS MaxPackageID FROM tickets WHERE Type LIKE 'Custom%'",
+                            (packageError, packageResults) => {
+                                if (packageError) {
+                                    console.log(packageError);
+                                    return res.status(500).send("Internal Server Error");
+                                }
+            
+                                let packageId = 1;
+                                if (packageResults.length > 0 && packageResults[0].MaxPackageID) {
+                                    const maxPackageId = parseInt(packageResults[0].MaxPackageID.replace('Custom', ''));
+                                    packageId = maxPackageId + 1;
+                                }
+
+                                console.log(rides)
+                                let details = ""
+
+                                for(let i = 0; i < rides.length; i++) {
+                                    details += rides[i] + ` (${ticketCount[i]}), `
+                                }
+
+                                details = details.slice(0, details.length - 2)
+                                console.log(details)
+            
+                                db.query(
+                                    "INSERT INTO tickets (UserUserID, Type, Price, TicketID, PackageDetails) VALUES (?, ?, ?, ?, ?)",
+                                    [decoded.id, `Custom ${packageId}`, total, ticketId, details],
+                                    (ticketError) => {
+                                        if (ticketError) {
+                                            console.log(ticketError);
+                                            return res.status(500).send("Internal Server Error");
+                                        }
+            
+                                        return res.status(200).json({ success: true })
+                                    }
+                                );
+                            }
+                        );
+                    }
+                }
+            });
+        });
+    })
+}
