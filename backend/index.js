@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const dotenv = require('dotenv');
 const cors = require('cors');
-const { Login, Register, FetchRides, GetUserData, AdminLogin, AdminDeleteUser, GetUserDataAsAdmin, fetchReviews, addReview, BuyTickets, getPackages, AdminAddPackage, AdminRemovePackage, AdminUpdatePackage, createCustomPackage, fetchUserHistory, fetchBalance, AdminRemoveRides } = require("./controllers/auth");
+const { Login, Register, FetchRides, GetUserData, AdminLogin, AdminDeleteUser, GetUserDataAsAdmin, fetchReviews, addReview, BuyTickets, getPackages, AdminAddPackage, AdminRemovePackage, AdminUpdatePackage, createCustomPackage, fetchUserHistory, fetchBalance, AdminRemoveRides, AdminAddRides } = require("./controllers/auth");
 
 const publicDirectory = path.join(__dirname, "./public");
 dotenv.config({ path: path.resolve(__dirname, '../.env') })
