@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const dotenv = require('dotenv');
 const cors = require('cors');
-const { Login, Register, FetchRides, GetUserData, AdminLogin, AdminDeleteUser, GetUserDataAsAdmin, fetchReviews, addReview, BuyTickets, getPackages, AdminAddPackage, AdminRemovePackage, AdminUpdatePackage, createCustomPackage } = require("./controllers/auth");
+const { Login, Register, FetchRides, GetUserData, AdminLogin, AdminDeleteUser, GetUserDataAsAdmin, fetchReviews, addReview, BuyTickets, getPackages, AdminAddPackage, AdminRemovePackage, AdminUpdatePackage, createCustomPackage, fetchUserHistory, fetchBalance, AdminRemoveRides } = require("./controllers/auth");
 
 const publicDirectory = path.join(__dirname, "./public");
 dotenv.config({ path: path.resolve(__dirname, '../.env') })
@@ -29,6 +29,10 @@ app.post('/add-review', addReview)
 app.get('/get-package', getPackages)
 app.post('/buy-package', BuyTickets)
 app.post('/admin-add-package', AdminAddPackage)
+app.post('/admin-add-rides', AdminAddRides)
+app.post('/admin-remove-rides', AdminRemoveRides)
+app.post('/fetch-balance', fetchBalance)
+app.post('/fetch-user-history', fetchUserHistory)
 app.post('/admin-delete-package', AdminRemovePackage)
 app.post('/admin-update-package', AdminUpdatePackage)
 app.post('/custom-package', createCustomPackage)

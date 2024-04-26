@@ -558,3 +558,82 @@ exports.createCustomPackage = (req, res) => {
         });
     })
 }
+
+exports.fetchBalance = (req, res) => {
+    jwt.verify(req.body.adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+        if(err) return res.json('NOT AN ADMIN')
+
+        db.query('SELECT * FROM tickets', (err, result) => {
+            if(err) return res.send("AN ERROR HAS OCCURED")
+    
+            return res.send(result)
+        })
+    })
+}
+
+exports.fetchUserHistory = (req, res) => {
+    jwt.verify(req.body.token, process.env.JWT_SECRET, (err, decoded) => {
+        if(err) return res.json('NOT LOGGED IN')
+
+        db.query('SELECT * FROM tickets where UserUserID = ?',[decoded.id], (err, result) => {
+            if(err) return res.send("AN ERROR HAS OCCURED")
+    
+            return res.send(result)
+        })
+    })
+}
+
+//Rohan
+exports.AdminRemoveRides = (req, res) => {
+    const { rideName, adminToken } = req.body;
+        
+    if (!rideName || !adminToken) {
+        return res.status(400).json({ error: 'Write the name of the ride properly or admin is not verified' });
+    }
+
+    jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+        if(err) return res.send("USER NOT ADMIN")
+
+        const sql = 'DELETE FROM rides WHERE Name = ?'
+        
+        db.query(sql, [rideName], (error, results) => {
+            if (error) {
+                console.error('Error deleting ride:', error);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: 'Ride not found' });
+            }
+
+            res.status(200).json({ message: 'Ride deleted successfully' });
+        });
+    })
+};  
+
+exports.AdminAddRides = (req, res) => {
+    const { rideName, rideDescription, rideImageLink, price, adminToken } = req.body;
+
+    console.log(req.body)
+  
+    if (!rideName || !rideDescription || !price || !rideImageLink || !adminToken) {
+      return res.status(400).json({ error: 'All parameters are required' });
+    }
+
+    jwt.verify(adminToken, process.env.JWT_ADMIN_SECRET, (err, decoded) => {
+        if(err) return res.send("USER IS NOT ADMIN")
+
+        const sql = 'INSERT INTO rides (Name, Description, Price, image) VALUES (?, ?, ?, ?)';
+        const values = [rideName, rideDescription, price, rideImageLink];
+  
+
+        db.query(sql, values, (error, results) => {
+            if (error) {
+                console.error('Error adding ride:', error);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+        
+            res.status(201).json({ message: 'Ride added successfully', rideId: results.insertId });
+        });
+    })
+  };
