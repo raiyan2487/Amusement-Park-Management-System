@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { FaHistory } from "react-icons/fa";
 import amusementPark from '../images/background.gif'
 import { FaUser } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
     const [id, setId] = useState("...");
@@ -62,7 +63,7 @@ const UserProfile = () => {
 
                             <button className="relative top-52 w-full flex justify-between">
                                 <p className="relative top-1 font-bold text-red-500">{number}</p>
-                                <FaHistory className="relative bottom-3 text-4xl" />
+                                <Link to="/user-history"><FaHistory className="relative bottom-3 text-4xl" /></Link>
                             </button>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Ridebox(props) {
-  const { imageSrc, name, description } = props;
+  const { imageSrc, name, description, price } = props;
 
   return (
     <div className="flex m-3 p-5 bg-pink border max-w-7xl border-gray-300 w-auto">
@@ -13,6 +13,7 @@ function Ridebox(props) {
       <div className="flex-1">
         <p className="flex-1 text-3xl font-bold mb-4">{name}</p>
         <p className="flex-1">{description}</p>
+        <p className="font-bold top-1.5 relative">Price: {price}</p>
         {/* <p className="price">Price: {price}</p>
         <p className="available-tickets">Available Tickets: {availableTickets}</p> */}
       </div>

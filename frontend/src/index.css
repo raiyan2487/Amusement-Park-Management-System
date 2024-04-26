@@ -13,3 +13,26 @@
 .h-real-large {
     height: 32rem;
 }
+
+.input-field {
+    @apply my-2 px-4 py-2 border-none rounded-md h-12;
+}
+
+.bowlby-one-sc-regular {
+    font-family: "Bowlby One SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .font-color-special {
+    color: #e3d8a9;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.7);
+  }
+
+.color-red-special {
+    background-color: rgb(241, 125, 125);
+}
+
+.div-size-special {
+    width: calc(100vw - 80px);
+}

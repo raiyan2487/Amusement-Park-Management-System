@@ -8,7 +8,7 @@ export const Header = () => {
 
                 <div className="logo-wrapper pl-4 flex items-center">
                     <Link to="/" className="toggleColor text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl">
-                        <img src={imagination} alt="logo" className="w-40 h-20 object-cover"/>
+                        <img src={imagination} alt="logo" className="relative top-2 w-48 h-28 object-cover"/>
                     </Link>
                 </div>
 
@@ -19,9 +19,10 @@ export const Header = () => {
                 <div className="flex items-center justify-center space-x-4">
                     <Link className="font-bold text-sm" to="/">Home</Link>
                     <Link className="font-bold text-sm " to="/Rides">Rides</Link>
-                    <Link className="font-bold text-sm" to="/user-profile">User Profile</Link>
-                    <Link className="font-bold text-sm" to="/reviews">Reviews</Link>
                     <Link className="font-bold text-sm" to="/packages">Packages</Link>
+                    <Link className="font-bold text-sm" to="/custom-package">Custom Package</Link>
+                    <Link className="font-bold text-sm" to="/reviews">Reviews</Link>
+                    <Link className="font-bold text-sm" to="/user-profile">User Profile</Link>
 
                     {(document.cookie == "token=0" || document.cookie == "" || document.cookie == undefined) ? 
                         <Link className="font-bold text-sm" to="/login">Login</Link> :

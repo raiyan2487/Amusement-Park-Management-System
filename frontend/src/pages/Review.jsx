@@ -36,7 +36,7 @@ const Review = () => {
        <h1 className="font-bold text-3xl my-5">Add a Review</h1>
        <input type="sumbit" className='font-bold my-2 mx-0 p-4 border-2 border-black rounded-2xl w-1/2' value={review} onChange={(e) => setReview(e.target.value)} />
        <p className='font-bold'>{message}</p>
-       <button className="font-bold relative top-2 border-none bg-cyan-400 px-5 py-4 rounded-lg cursor-pointer text-black" onClick={handleSubmit}>Submit</button>
+       <button className="font-bold relative top-2 border-none bg-red-400 px-5 py-4 rounded-lg cursor-pointer text-black" onClick={handleSubmit}>Submit</button>
 
        <ReviewList/>
 
