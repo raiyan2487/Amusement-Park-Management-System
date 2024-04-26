@@ -13,6 +13,15 @@ import Packages from './pages/Packages.jsx'
 import Review from './pages/Review.jsx'
 import Rides from './pages/Rides.jsx'
 import Home from './pages/Home.jsx'
+import AdminAddRide from './pages/AdminAddRides.jsx'
+import AdminRemoveRides from './pages/AdminRemoveRides.jsx'
+import BalanceSheet from './pages/AdminBalanceSheet.jsx'
+import AdminAddPackage from './pages/AdminAddPackage.jsx'
+import ViewPackages from './pages/AdminViewPackage.jsx'
+import AdminEditPackage from './pages/AdminEditPackage.jsx'
+import UserHistoryPage from './pages/UserHistory.jsx'
+import CustomPackage  from './pages/CustomPackage.jsx'
+import Checkout from './pages/Checkout.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
@@ -22,12 +31,22 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/login" element={<UserLogin />} />
                 <Route path="/user-profile" element={<UserProfile />} />
                 <Route path="/rides" element={<Rides />} />
-                <Route path="/admin" element={<AdminHome />} />
-                <Route path="/admin/login" element={<AdminLogin />} /> 
-                <Route path="/admin/ban-user" element={<BanUser />} />
                 <Route path="/reviews" element={<Review />} />
                 <Route path="/packages" element={<Packages />} />
                 <Route path="/buy-tickets/:pname/:Price" element={<TicketConfirmation />} />
+                <Route path="/user-history" element={<UserHistoryPage/>}/>
+                <Route path="/custom-package" element={<CustomPackage />} />
+                <Route path="/checkout" element={<Checkout />} />
+
+                <Route path="/admin" element={<AdminHome />} />
+                <Route path="/admin/login" element={<AdminLogin />} /> 
+                <Route path="/admin/ban-user" element={<BanUser />} />
+                <Route path="/admin/add-rides" element={<AdminAddRide />} />
+                <Route path="/admin/remove-rides" element={<AdminRemoveRides />} />
+                <Route path="/admin/balance-sheet" element={<BalanceSheet />} />
+                <Route path="/admin/add-package" element={<AdminAddPackage />} />
+                <Route path="/admin/view-package" element={<ViewPackages />} />
+                <Route path="/admin/edit-package" element={<AdminEditPackage /> } />
             </Routes>
         </BrowserRouter> 
     </React.StrictMode>
