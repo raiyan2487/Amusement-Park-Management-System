@@ -26,8 +26,7 @@ export const TicketConfirmation = () => {
 
             if (response.status === 200) {
                 setError(null);
-                alert("You have successfully purchased " + pname + " Package!")
-                window.location.href = "/user-history";
+                window.location.href = "/packages";
             }   else {
                 setError('Failed to submit. Please try again.');
             }
